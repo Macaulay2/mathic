@@ -9,7 +9,7 @@ AM_CPPFLAGS = -I${top_srcdir}/
 lib_LTLIBRARIES = libmathic.la
 
 # set the C++ compiler to include src/
-AM_CXXFLAGS=-I$(top_srcdir)/src/ -std=gnu++14
+AM_CXXFLAGS=-I$(top_srcdir)/src/ -std=gnu++17
 
 # the sources that are built to make libmathic.
 libmathic_la_SOURCES = src/mathic/Timer.cpp	\
@@ -79,7 +79,7 @@ if with_gtest
 TESTS=unittest
 check_PROGRAMS=$(TESTS)
 
-unittest_CXXFLAGS = -I$(top_srcdir)/src/ -std=gnu++14
+unittest_CXXFLAGS = -I$(top_srcdir)/src/ -std=gnu++17
 unittest_LDADD = $(top_builddir)/libmathic.la -lpthread -lgtest
 
 test_LIBS=
