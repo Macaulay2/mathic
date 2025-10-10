@@ -56,7 +56,7 @@ namespace mathic {
 	Configuration _conf;
 	struct Cmp {
     Cmp(const Configuration* conf): _conf(conf) {}
-	  bool operator()(const Entry& a, const Entry& b) {
+	  bool operator()(const Entry& a, const Entry& b) const {
 		return _conf->cmpLessThan(_conf->compare(b, a));
 	  }
 	  const Configuration* _conf; // should be &, but gcc complains
