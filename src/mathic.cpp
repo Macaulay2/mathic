@@ -2,5 +2,5 @@
 
 extern "C" {
   void libmathicIsPresent(void) {}
-  char MATHIC_VERSION_STRING[] = "1.0";
+  char MATHIC_VERSION_STRING[] = PACKAGE_VERSION;
 }

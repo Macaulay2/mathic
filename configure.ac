@@ -1,4 +1,4 @@
-# Note: also update version in CMakeLists.txt and src/mathic.cpp
+# Note: also update version in CMakeLists.txt
 dnl AC_INIT sets up autoconf and must be first macro.
 AC_INIT([mathic], [1.0]) # package, version, bug-report-email
 
