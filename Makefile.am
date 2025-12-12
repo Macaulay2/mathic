@@ -50,7 +50,8 @@ pkgconfig_DATA = build/autotools/mathic.pc
 # When making a distribution file, Automake knows to include all files
 # that are necessary to build the project. EXTRA_DIST specifies files
 # to include beyond those used in the build process.
-EXTRA_DIST = autogen.sh
+EXTRA_DIST = autogen.sh CMakeLists.txt src/CMakeLists.txt \
+  cmake/FindMemtailor.cmake
 
 # tell automake what programs are there that are not built automatically
 EXTRA_PROGRAMS = pqsim divsim
