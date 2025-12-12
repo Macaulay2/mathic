@@ -12,13 +12,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install -y libgtest-dev libmemtailor-dev
-      - name: Build mathic
+      - name: Build mathic (autotools)
         run: |
           ./autogen.sh
           cd build/autotools
           ../../configure
           make
-      - name: Check mathic
-        run: |
-          cd build/autotools
+          make check
           make distcheck
+      - name: Build mathic (cmake)
+        run: |
+          mkdir -p build/cmake
+          cd build/cmake
+          cmake -B. -S../.. -GNinja
+          ninja
