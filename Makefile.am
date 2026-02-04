@@ -45,7 +45,7 @@ pkgconfig_DATA = build/autotools/mathic.pc
 # that are necessary to build the project. EXTRA_DIST specifies files
 # to include beyond those used in the build process.
 EXTRA_DIST = autogen.sh CMakeLists.txt src/CMakeLists.txt \
-  cmake/FindMemtailor.cmake
+  cmake/FindMemtailor.cmake lgpl-2.0.txt lgpl-2.1.txt  lgpl-3.0.txt
 
 # tell automake what programs are there that are not built automatically
 EXTRA_PROGRAMS = pqsim divsim
