@@ -2,27 +2,39 @@ name: Build
 on:
   workflow_dispatch:
   pull_request:
-  push:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        build-system:
+          - autotools
+          - cmake
+        os:
+          - macos-latest
+          - ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libgtest-dev libmemtailor-dev
-      - name: Build mathic (autotools)
+          if test ${{ matrix.os }} = ubuntu-latest
+          then sudo apt-get install -y libgtest-dev libmemtailor-dev
+          else brew install autoconf automake libtool googletest \
+                   Macaulay2/tap/memtailor
+               echo "CPPFLAGS=-I$(brew --prefix)/include" >> $GITHUB_ENV
+               echo "LDFLAGS= -L$(brew --prefix)/lib"     >> $GITHUB_ENV
+          fi
+      - name: Build and check
         run: |
-          ./autogen.sh
-          cd build/autotools
-          ../../configure
-          make
-          make check
-          make distcheck
-      - name: Build mathic (cmake)
-        run: |
-          mkdir -p build/cmake
-          cd build/cmake
-          cmake -B. -S../.. -GNinja
-          ninja
+          mkdir build-dir
+          cd build-dir
+          if test ${{ matrix.build-system }} = autotools
+          then ../autogen.sh
+               ../configure
+               make distcheck
+          else cmake -B. -S.. -GNinja
+               ninja
+               src/mathic-unit-tests
+          fi
