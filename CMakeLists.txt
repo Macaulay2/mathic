@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.12)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(mathic VERSION 1.1 LANGUAGES CXX)
+project(mathic VERSION 1.2 LANGUAGES CXX)
 
 option(enable_pqsim "Build pqsim" OFF)
 option(enable_divsim "Build divsim" OFF)
