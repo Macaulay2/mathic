@@ -4,6 +4,7 @@ ACLOCAL_AMFLAGS = -I build/autotools/m4
 
 # tell Libtool what the name of the library is.
 lib_LTLIBRARIES = libmathic.la
+libmathic_la_LDFLAGS = -version-info @MATHIC_SO_VERSION@
 
 # the sources that are built to make libmathic.
 libmathic_la_SOURCES = src/mathic/Timer.cpp	\
