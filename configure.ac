@@ -101,6 +101,9 @@ AS_IF([test "x$with_gtest" != "xno"],
 
 AM_CONDITIONAL([with_gtest], [test "x$with_gtest" != "xno"])
 
+CPPFLAGS="$CPPFLAGS -I$srcdir/src"
+AC_SUBST([CPPFLAGS])
+
 dnl Set up AC_OUTPUT to create each file by copying an input file
 dnl while substituting the output variable values.
 AC_CONFIG_FILES([Makefile
