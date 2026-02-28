@@ -181,10 +181,12 @@ namespace mathic {
 	  void undoAdd() {}
 
 	  void retireIndex(size_t index) {
+		(void)index;
 		MATHIC_ASSERT(false); // this method should not be called.
 	  }
 
 	  bool retired(size_t index) const {
+		(void)index;
 		return false;
 	  }
 	};

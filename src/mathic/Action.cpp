@@ -9,6 +9,8 @@ namespace mathic {
     std::vector<std::string> tokens,
     CliParser& parser
   ) {
+    (void)parser;
+
     if (!tokens.empty()) {
       reportError("Expected a dash (-) to indicate an option when reading \"" +
         tokens.front() + "\".");
