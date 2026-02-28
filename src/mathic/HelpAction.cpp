@@ -39,6 +39,7 @@ namespace mathic {
   }
 
   void HelpAction::pushBackParameters(std::vector<CliParameter*>& parameters) {
+    (void)parameters;
   }
 
   namespace {
