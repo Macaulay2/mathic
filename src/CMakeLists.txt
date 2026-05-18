@@ -2,7 +2,7 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
   add_compile_options(-DMATHIC_DEBUG -DMEMT_DEBUG)
 endif()
 
-add_library(mathic STATIC
+add_library(mathic
   mathic.h
   mathic.cpp
   mathic/Action.cpp
