@@ -117,7 +117,7 @@ namespace mathic {
 
     /** This is the memory for the entries. It is kept as a raw char*
      to avoid constructing all the entries right away. */
-    char _beginMemory[C::LeafSize * sizeof(ExtEntry)];
+    alignas(ExtEntry) char _beginMemory[C::LeafSize * sizeof(ExtEntry)];
     iterator _end; // points into _beginMemory
 #ifdef MATHIC_DEBUG
     const bool _sortOnInsertDebug;
