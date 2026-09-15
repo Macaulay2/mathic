@@ -10,6 +10,7 @@
 #include <list>
 #include <algorithm>
 #include <sstream>
+#include <iterator>
 
 namespace mathic {
   /** An object that supports queries for divisors of a monomial using
