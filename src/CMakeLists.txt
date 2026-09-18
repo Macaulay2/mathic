@@ -1,7 +1,3 @@
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
-  add_compile_options(-DMATHIC_DEBUG -DMEMT_DEBUG)
-endif()
-
 add_library(mathic
   mathic.h
   mathic.cpp
@@ -35,11 +31,16 @@ add_library(mathic
   mathic/stdinc.h
   )
 
+add_library(mathic::mathic ALIAS mathic)
+target_compile_features(mathic PUBLIC cxx_std_17)
+# Export the installed library's ABI; dependency targets supply their own flags.
+target_compile_definitions(mathic PUBLIC $<BUILD_INTERFACE:$<$<CONFIG:Debug>:MATHIC_DEBUG>>)
+
 target_link_libraries(mathic memtailor Threads::Threads)
 
 target_include_directories(mathic PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
 include(CTest)
