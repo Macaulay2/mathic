@@ -20,12 +20,38 @@ jobs:
       - name: Install dependencies
         run: |
           if test ${{ matrix.os }} = ubuntu-latest
-          then sudo apt-get install -y libgtest-dev libmemtailor-dev
-          else brew install autoconf automake libtool googletest \
+          then sudo apt-get install -y pkg-config libgtest-dev libmemtailor-dev
+          else brew install autoconf automake libtool pkgconf googletest \
                    Macaulay2/tap/memtailor
                echo "CPPFLAGS=-I$(brew --prefix)/include" >> $GITHUB_ENV
                echo "LDFLAGS= -L$(brew --prefix)/lib"     >> $GITHUB_ENV
           fi
+      - name: Install dependency metadata for macOS CMake consumers
+        if: matrix.build-system == 'cmake' && runner.os == 'macOS'
+        shell: bash
+        run: |
+          # Current Homebrew CMake bottles omit dependency package metadata.
+          # Released Autotools builds supply it without depending on another PR.
+          prefix="$RUNNER_TEMP/dependencies"
+          export CPPFLAGS="-I$prefix/include $CPPFLAGS"
+          export LDFLAGS="-L$prefix/lib $LDFLAGS"
+          export PKG_CONFIG_PATH="$prefix/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+          for dependency in memtailor:1.4; do
+            name=${dependency%:*}
+            version=${dependency#*:}
+            curl -fsSL "https://github.com/Macaulay2/$name/archive/refs/tags/v$version.tar.gz" \
+              -o "$RUNNER_TEMP/$name.tar.gz"
+            tar -xzf "$RUNNER_TEMP/$name.tar.gz" -C "$RUNNER_TEMP"
+            (
+              cd "$RUNNER_TEMP/$name-$version"
+              ./autogen.sh
+              ./configure --prefix="$prefix" --enable-shared
+              make -j2
+              make install
+            )
+          done
+          echo "CMAKE_PREFIX_PATH=$prefix${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> "$GITHUB_ENV"
       - name: Build and check
         run: |
           mkdir build-dir

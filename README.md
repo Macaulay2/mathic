@@ -52,7 +52,9 @@ target_link_libraries(my_program PRIVATE mathic::mathic)
 
 The target supplies C++17, include paths and transitive dependencies. Dependency
 CMake configs are preferred; pkg-config metadata is supported for existing
-system installations. Bare header/library discovery is insufficient to propagate
+system installations. Older Homebrew CMake bottles may lack both metadata
+formats; build the dependency with its released Autotools build, or install a
+CMake package that supplies the config. Bare header/library discovery is insufficient to propagate
 dependencies' ABI flags. The dependency find modules are shipped with the config.
 Use a quoted semicolon-separated `-DCMAKE_PREFIX_PATH='/prefix/one;/prefix/two'`
 for nonstandard prefixes; the Unix environment variable uses colons instead.
