@@ -90,3 +90,7 @@ check:
 	@echo "configured without gtest, so unittests cannot be run."
 
 endif
+
+EXTRA_DIST += cmake/mathicConfig.cmake.in \
+  cmake/tests/CMakeLists.txt cmake/tests/consumer.cpp
+EXTRA_DIST += cmake/mathic.pc.in

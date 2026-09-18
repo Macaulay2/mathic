@@ -38,3 +38,37 @@ jobs:
                ninja
                src/mathic-unit-tests
           fi
+      - name: Test installed CMake packages
+        if: matrix.build-system == 'cmake'
+        shell: bash
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: 2
+        run: |
+          for shared in ON OFF; do
+            for config in Release Debug; do
+              build="$RUNNER_TEMP/mathic-$shared-$config"
+              prefix="$build/install"
+              cmake -S . -B "$build" -GNinja \
+                -DCMAKE_BUILD_TYPE="$config" -DBUILD_SHARED_LIBS="$shared" \
+                -DCMAKE_INSTALL_PREFIX="$prefix"
+              cmake --build "$build" --target install
+              ctest --test-dir "$build" --output-on-failure
+              # Check pkg-config before moving its installation prefix.
+              pc=$(find "$prefix" -name mathic.pc -print -quit)
+              flags=$(PKG_CONFIG_PATH="$(dirname "$pc")${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" pkg-config --cflags mathic)
+              expect_debug=OFF
+              if test "$config" = Debug; then
+                expect_debug=ON
+                [[ "$flags" == *-DMATHIC_DEBUG* ]]
+              else
+                [[ "$flags" != *-DMATHIC_DEBUG* ]]
+              fi
+              mv "$prefix" "$build/relocated"
+              cmake -S cmake/tests -B "$build/consumer" -GNinja \
+                -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=11 \
+                -DCMAKE_PREFIX_PATH="$build/relocated" \
+                -DEXPECT_DEBUG="$expect_debug"
+              cmake --build "$build/consumer"
+              ctest --test-dir "$build/consumer" --output-on-failure
+            done
+          done

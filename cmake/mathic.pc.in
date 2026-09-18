@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: mathic
+Description: mathic library for Groebner basis computations
+URL: https://github.com/Macaulay2/mathic
+Version: @PROJECT_VERSION@
+Requires: memtailor
+Libs: -L${libdir} -lmathic
+Libs.private: @CMAKE_THREAD_LIBS_INIT@
+Cflags: -I${includedir} $<$<CONFIG:Debug>:-DMATHIC_DEBUG>
