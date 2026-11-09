@@ -2,6 +2,9 @@
 # autoconf. We use -I to tell aclocal where we put the local macros.
 ACLOCAL_AMFLAGS = -I build/autotools/m4
 
+# Options passed to the C PreProcessor (CPP), NOT the C Plus Plus compiler.
+AM_CPPFLAGS = -I$(top_srcdir)/src
+
 # tell Libtool what the name of the library is.
 lib_LTLIBRARIES = libmathic.la
 libmathic_la_LDFLAGS = -version-info @MATHIC_SO_VERSION@
