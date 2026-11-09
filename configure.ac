@@ -11,6 +11,10 @@ dnl  if autoconf is told the source code is in a directory that does not
 dnl  contain this file then it knows that the directory is wrong.
 AC_CONFIG_SRCDIR([src/mathic.h])
 
+# Locate the C++ compiler and require C++17.
+AC_PROG_CXX
+AX_CXX_COMPILE_STDCXX([17],,[mandatory])
+
 # Check that memtailor is installed and locate it
 AC_LANG([C++])
 AC_DEFUN([NO_MEMTAILOR_ERROR], AC_MSG_ERROR([memtailor is required]))
@@ -59,9 +63,6 @@ AC_PROG_LN_S
 # the fallback is not used.
 AC_PROG_INSTALL
 
-# Locate the C++ compiler.
-AC_PROG_CXX
-
 # Set up LibTool
 LT_INIT([disable-shared])
 
@@ -69,8 +70,6 @@ dnl Set the version for the library -- this concerns compatibility of the
 dnl source and binary interface of the library and is not the same as the
 dnl version of the project.
 AC_SUBST([MATHIC_SO_VERSION], [0:5:0])
-
-AX_CXX_COMPILE_STDCXX([17],,[mandatory])
 
 dnl ----- The gtest dependency
 
