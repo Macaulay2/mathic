@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 project(mathic-consumer LANGUAGES CXX)
-find_package(mathic 1.5 CONFIG REQUIRED)
+find_package(mathic CONFIG REQUIRED)
 add_executable(consumer consumer.cpp)
 target_link_libraries(consumer PRIVATE mathic::mathic)
 if(EXPECT_DEBUG)
