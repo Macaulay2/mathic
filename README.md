@@ -46,7 +46,7 @@ Both shared and static installations provide headers, pkg-config metadata,
 and a relocatable CMake package under the platform's library directory:
 
 ```cmake
-find_package(mathic 1.5 CONFIG REQUIRED)
+find_package(mathic 1.6 CONFIG REQUIRED)
 target_link_libraries(my_program PRIVATE mathic::mathic)
 ```
 

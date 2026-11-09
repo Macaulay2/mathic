@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(mathic VERSION 1.5 LANGUAGES CXX)
+project(mathic VERSION 1.6 LANGUAGES CXX)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -32,7 +32,7 @@ add_compile_options(
 add_subdirectory(src)
 
 set_target_properties(mathic PROPERTIES
-  VERSION 0.0.5 SOVERSION 0 PUBLIC_HEADER src/mathic.h)
+  VERSION 0.0.6 SOVERSION 0 PUBLIC_HEADER src/mathic.h)
 install(TARGETS mathic EXPORT mathicTargets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
