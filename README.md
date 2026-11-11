@@ -29,7 +29,7 @@ Mathic is licensed for use under the terms of GNU Lesser General Public License
 version 2.0, and under any later version; the option is yours.  See the files
 lgpl-*.txt in this directory.
 
-## Building and using the CMake package
+## Building with CMake
 
 This build requires CMake 3.18 or newer and a C++17 compiler.
 
@@ -41,26 +41,38 @@ ctest --test-dir build-dir --output-on-failure
 cmake --install build-dir
 ```
 
-`BUILD_TESTING=OFF` disables the GoogleTest dependency and unit tests.
-Both shared and static installations provide headers, pkg-config metadata,
-and a relocatable CMake package under the platform's library directory:
+Mathic needs [memtailor](https://github.com/Macaulay2/memtailor). CMake looks
+for it in this order: memtailor's CMake package (installed by memtailor 1.5 or
+later when built with CMake), its pkg-config file, and finally its header and
+library directly. Prefer the first two: only they tell Mathic whether memtailor
+was built with `MEMT_DEBUG`, which changes memtailor's data layout, so Mathic
+must be compiled to match. If memtailor is in a nonstandard location, pass
+`-DCMAKE_PREFIX_PATH=/its/prefix` (separate several prefixes with semicolons,
+quoted; the environment variable uses colons).
+
+`-DBUILD_TESTING=OFF` skips the unit tests and the GoogleTest dependency.
+
+## Using an installed Mathic
+
+A CMake installation, shared or static, provides headers, pkg-config metadata,
+and a relocatable CMake package under the platform's library directory. An
+Autotools installation provides headers and pkg-config metadata only, without
+the Debug flag described below. In a CMake project:
 
 ```cmake
 find_package(mathic 1.6 CONFIG REQUIRED)
 target_link_libraries(my_program PRIVATE mathic::mathic)
 ```
 
-The target supplies C++17, include paths and transitive dependencies. Dependency
-CMake configs are preferred; pkg-config metadata is supported for existing
-system installations. Older Homebrew CMake bottles may lack both metadata
-formats; build the dependency with its released Autotools build, or install a
-CMake package that supplies the config. Bare header/library discovery is insufficient to propagate
-dependencies' ABI flags. The dependency find modules are shipped with the config.
-Use a quoted semicolon-separated `-DCMAKE_PREFIX_PATH='/prefix/one;/prefix/two'`
-for nonstandard prefixes; the Unix environment variable uses colons instead.
+Linking to `mathic::mathic` sets up everything needed to build against Mathic:
+it adds Mathic's include directory, links memtailor, and compiles your program
+as C++17 or later, which Mathic's headers require.
 
-The installed package exports `MATHIC_DEBUG` if the library was built in
-Debug mode, even when the consumer uses Release. It inherits dependencies' own
-ABI flags instead of forcing their Debug layouts. `pkg-config --cflags mathic`
-also reports the installed library's Debug flag; pkg-config consumers should
-select C++17 or later explicitly.
+`find_package(mathic)` in turn looks for memtailor's CMake package, which
+memtailor installs only from version 1.5 on, and only when memtailor itself
+was built with CMake.
+
+A Debug build of Mathic defines `MATHIC_DEBUG`, which changes its data layout.
+In a CMake installation, both the CMake package and `pkg-config --cflags mathic`
+pass that flag on, so programs using Mathic match it even when they're built in
+Release mode. With pkg-config you also need to request C++17 or later yourself.
