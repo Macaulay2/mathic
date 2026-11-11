@@ -70,12 +70,16 @@ jobs:
               else
                 echo "Skipping pkg-config flags: memtailor.pc is unavailable"
               fi
-              mv "$prefix" "$build/relocated"
-              cmake -S cmake/tests -B "$build/consumer" -GNinja \
-                -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=11 \
-                -DCMAKE_PREFIX_PATH="$build/relocated" \
-                -DEXPECT_DEBUG="$expect_debug"
-              cmake --build "$build/consumer"
-              ctest --test-dir "$build/consumer" --output-on-failure
+              if test "$RUNNER_OS" = macOS; then
+                mv "$prefix" "$build/relocated"
+                cmake -S cmake/tests -B "$build/consumer" -GNinja \
+                  -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=11 \
+                  -DCMAKE_PREFIX_PATH="$build/relocated" \
+                  -DEXPECT_DEBUG="$expect_debug"
+                cmake --build "$build/consumer"
+                ctest --test-dir "$build/consumer" --output-on-failure
+              else
+                echo "Skipping installed consumer: the apt memtailor has no CMake config"
+              fi
             done
           done
