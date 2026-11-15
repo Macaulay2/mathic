@@ -60,7 +60,7 @@ Autotools installation provides headers and pkg-config metadata only, without
 the Debug flag described below. In a CMake project:
 
 ```cmake
-find_package(mathic 1.6 CONFIG REQUIRED)
+find_package(mathic 1.7 CONFIG REQUIRED)
 target_link_libraries(my_program PRIVATE mathic::mathic)
 ```
 
